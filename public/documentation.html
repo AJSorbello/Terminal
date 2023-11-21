@@ -1,12 +1,108 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Movie Clips</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <title>API Movies</title>
+    <!-- <style>
+      /* table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      } */
+    </style> -->
   </head>
   <body>
-    <h1>Top 10 Movies of All Time</h1>
-    <p>Show me the money!</p>
+    <h1>API Movies</h1>
+    <h2>Endpoints</h2>
+
+    <h3>Movies API</h3>
+    <table>
+      <tr>
+        <th>Request</th>
+        <th>URL</th>
+        <th>Response</th>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/movies</td>
+        <td>List of all movies</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/movies/:title</td>
+        <td>Details of a specific movie</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/movies/:genre/genreName</td>
+        <td>Details of a specific movie genre</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/movies/directors/:directorName</td>
+        <td>Director of a specific movie</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/users/:id/:movieTitle</td>
+        <td>Confirmation of movie added to Favorites</td>
+      </tr>
+      <!-- <tr>
+        <td>PUT</td>
+        <td>/movies/:title</td>
+        <td>Confirmation of movie update</td>
+      </tr> -->
+      <tr>
+        <td>DELETE</td>
+        <td>/users/:id/:movieTitle</td>
+        <td>Confirmation of movie deletion</td>
+      </tr>
+    </table>
+
+    <h3>Users API</h3>
+    <table>
+      <tr>
+        <th>Request</th>
+        <th>URL</th>
+        <th>Response</th>
+      </tr>
+      <!-- <tr>
+        <td>GET</td>
+        <td>/users</td>
+        <td>List of all users</td>
+      </tr> -->
+      <!-- <tr>
+        <td>GET</td>
+        <td>/users/:userName</td>
+        <td>Details of a specific user</td>
+      </tr> -->
+      <tr>
+        <td>POST</td>
+        <td>/users</td>
+        <td>Confirmation of user creation</td>
+      </tr>
+      <tr>
+        <td>PUT</td>
+        <td>/users/:id</td>
+        <td>Confirmation of user update</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/users/:id</td>
+        <td>Confirmation of user deletion</td>
+      </tr>
+    </table>
   </body>
 </html>
