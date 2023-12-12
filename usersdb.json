@@ -1,0 +1,4 @@
+{"_id":{"$oid":"656e4e4d61c3f0c55ac20fb4"},"Username":"John Doe","Password":"Password123","Email":"jd2020@email.com","Birth_date":"1985-01-20","FavoriteMovies":[{"$oid":"656e4d2d61c3f0c55ac20fb3"},{"$oid":"656e452e61c3f0c55ac20fad"}]}
+{"_id":{"$oid":"656e4e8f61c3f0c55ac20fb5"},"Username":"Jane Doe","Password":"Password5050","Email":"janesDoe2020@email.com","Birth_date":"19875-01-20","FavoriteMovies":[{"$oid":"656e498e61c3f0c55ac20fb1"},{"$oid":"656e474461c3f0c55ac20faf"}]}
+{"_id":{"$oid":"656e4fac61c3f0c55ac20fb7"},"Username":"cooluser456","Password":"password2","Email":"cooluser456@email.com","Birth_date":"1992-02-02","FavoriteMovies":[{"$oid":"656e27f361c3f0c55ac20faa"},{"$oid":"656e4bf461c3f0c55ac20fb2"}]}
+{"_id":{"$oid":"656e4feb61c3f0c55ac20fb8"},"Username":"awesome789","Password":"password3","Email":"awesome789@example.com","Birth_date":"1994-03-03","FavoriteMovies":[{"$oid":"656e487861c3f0c55ac20fb0"},{"$oid":"656e4bf461c3f0c55ac20fb2"}]}
