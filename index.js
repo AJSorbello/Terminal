@@ -27,39 +27,44 @@ app.use(morgan("common"));
 
 // Middleware for passport
 // app.use(bodyParser.urlencoded({ extended: true }));
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
+let auth = require("./auth")(app);
+const passport = require("passport");
+require("./passport");
 
 app.get("/", (req, res) => {
   res.send("Welcome to myFlix!");
 });
 // User Routes
 // GET: Fetch all users
-app.get("/users", 
-async (req, res) => {
-  try {
-    const users = await Users.find();
-    res.status(200).json(users);
-  } catch (err) {
-    res.status(500).send("Error: " + err);
+app.get(
+  "/users",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const users = await Users.find();
+      res.status(200).json(users);
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
-});
+);
 
 // GET: Fetch a user by username
-app.get("/users/:Username", 
-passport.authenticate("jwt", { session: false }), 
-async (req, res) => {
-  try {
-    const user = await Users.findOne({ Username: req.params.Username });
-    user ? res.json(user) : res.status(404).send("User not found");
-  } catch (err) {
-    res.status(500).send("Error: " + err);
+app.get(
+  "/users/:Username",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const user = await Users.findOne({ Username: req.params.Username });
+      user ? res.json(user) : res.status(404).send("User not found");
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
-});
+);
 
 // PUT: Update a user's info by username
-// app.put("/users/:Username", 
+// app.put("/users/:Username",
 // passport.authenticate("jwt", { session: false }),
 // async (req, res) => {
 //   try {
@@ -77,30 +82,36 @@ async (req, res) => {
 // });
 
 // PUT: Update a user's info by username
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.put(
+  "/users/:Username",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
     // CONDITION TO CHECK ADDED HERE
-    if(req.user.Username !== req.params.Username){
-        return res.status(400).send('Permission denied');
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send("Permission denied");
     }
     // CONDITION ENDS
-    await Users.findOneAndUpdate({ Username: req.params.Username }, {
-        $set:
-        {
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
-        }
-    },
-        { new: true }) // This line makes sure that the updated document is returned
-        .then((updatedUser) => {
-            res.json(updatedUser);
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).send('Error: ' + err);
-        })
-});
+    await Users.findOneAndUpdate(
+      { Username: req.params.Username },
+      {
+        $set: {
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        },
+      },
+      { new: true }
+    ) // This line makes sure that the updated document is returned
+      .then((updatedUser) => {
+        res.json(updatedUser);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
 
 // POST: Add a user
 //Add a user
@@ -112,100 +123,110 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
   Email: String,
   Birthday: Date
 }*/
-app.post("/users", async (req, res) => {
-  await Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + "already exists");
-      } else {
-        Users.create({
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        })
-          .then((user) => {
-            res.status(201).json(user);
+app.post(
+  "/users",
+  async (req, res) => {
+    await Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Username + "already exists");
+        } else {
+          Users.create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
           })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send("Error: " + error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send("Error: " + error);
-    });
-});
+            .then((user) => {
+              res.status(201).json(user);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send("Error: " + error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("Error: " + error);
+      });
+  }
+);
 
 // Delete a user by username
-app.delete('/users/:Username', async (req, res) => {
-  await Users.findOneAndRemove({ Username: req.params.Username })
-    .then((user) => {
-      if (!user) {
-        res.status(400).send(req.params.Username + ' was not found');
-      } else {
-        res.status(200).send(req.params.Username + ' was deleted.');
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
+app.delete(
+  "/users/:Username",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    await Users.findOneAndUpdate({ Username: req.params.Username })
+      .then((user) => {
+        if (!user) {
+          res.status(400).send(req.params.Username + " was not found");
+        } else {
+          res.status(200).send(req.params.Username + " was deleted.");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
 
 // Movie Routes
 // GET: Fetch all movies
-app.get('/movies',
-passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get("/movies", async (req, res) => {
   await Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
     })
     .catch((error) => {
       console.error(error);
-      res.status(500).send('Error: ' + error);
+      res.status(500).send("Error: " + error);
     });
 });
 // POST: Add a movie to a user's list of favorites
-app.post("/users/:Username/movies/:MovieID",
-passport.authenticate("jwt", { session: false }),
- async (req, res) => {
-  try {
-    const updatedUser = await Users.findOneAndUpdate(
-      { Username: req.params.Username },
-      { $push: { FavoriteMovies: req.params.MovieID } },
-      { new: true }
-    );
-    updatedUser
-      ? res.json(updatedUser)
-      : res.status(404).send("User not found");
-  } catch (err) {
-    res.status(500).send("Error: " + err);
+app.post(
+  "/users/:Username/movies/:MovieID",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const updatedUser = await Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        { $push: { FavoriteMovies: req.params.MovieID } },
+        { new: true }
+      );
+      updatedUser
+        ? res.json(updatedUser)
+        : res.status(404).send("User not found");
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
-});
+);
 
 // DELETE: DELETE a movie of a user's list of favorites
-app.delete("/users/:Username/movies/:MovieID", async (req, res) => {
-  try {
-    const updatedUser = await Users.findOneAndUpdate(
-      { Username: req.params.Username },
-      { $pull: { FavoriteMovies: req.params.MovieID } },
-      { new: true }
-    );
-    updatedUser
-      ? res.json(updatedUser)
-      : res.status(404).send("Did not delete.");
-  } catch (err) {
-    res.status(500).send("Error: " + err);
+app.delete(
+  "/users/:Username/movies/:MovieID",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const updatedUser = await Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        { $pull: { FavoriteMovies: req.params.MovieID } },
+        { new: true }
+      );
+      updatedUser
+        ? res.json(updatedUser)
+        : res.status(404).send("Did not delete.");
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
-});
+);
 
 // GET: Fetch a movie by title
-app.get("/movies/:Title", 
-passport.authenticate("jwt", { session: false }),
-async (req, res) => {
+app.get("/movies/:Title", async (req, res) => {
   try {
     const movie = await Movies.findOne({ Title: req.params.Title });
     movie ? res.json(movie) : res.status(404).send("Movie not found");
@@ -215,9 +236,7 @@ async (req, res) => {
 });
 
 // GET: Fetch all movies by genre
-app.get("/movies/genres/:genreName",
-passport.authenticate("jwt", { session: false }),
- async (req, res) => {
+app.get("/movies/genres/:genreName", async (req, res) => {
   try {
     const movies = await Movies.find({ "Genre.Name": req.params.genreName });
     movies ? res.json(movies) : res.status(404).send("Movies not found");
@@ -238,32 +257,40 @@ app.post("/movies", async (req, res) => {
 });
 
 // PUT: Update a movie by title
-app.put("/movies/:Title", async (req, res) => {
-  try {
-    const updatedMovie = await Movies.findOneAndUpdate(
-      { Title: req.params.Title },
-      { $set: req.body },
-      { new: true }
-    );
-    updatedMovie
-      ? res.json(updatedMovie)
-      : res.status(404).send("Title not found");
-  } catch (err) {
-    res.status(500).send("Error: " + err);
+app.put(
+  "/movies/:Title",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const updatedMovie = await Movies.findOneAndUpdate(
+        { Title: req.params.Title },
+        { $set: req.body },
+        { new: true }
+      );
+      updatedMovie
+        ? res.json(updatedMovie)
+        : res.status(404).send("Title not found");
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
-});
+);
 
 // DELETE: Remove a movie by title
-app.delete("/movies/:Title", async (req, res) => {
-  try {
-    const movie = await Movies.findOneAndDelete({ Title: req.params.Title });
-    movie
-      ? res.status(200).send(`${req.params.Title} was deleted.`)
-      : res.status(404).send(`${req.params.Title} was not found`);
-  } catch (err) {
-    res.status(500).send("Error: " + err);
+app.delete(
+  "/movies/:Title",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const movie = await Movies.findOneAndDelete({ Title: req.params.Title });
+      movie
+        ? res.status(200).send(`${req.params.Title} was deleted.`)
+        : res.status(404).send(`${req.params.Title} was not found`);
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
-});
+);
 
 // Genre Routes
 
@@ -278,16 +305,20 @@ app.get("/genres", async (req, res) => {
 });
 
 // GET: Fetch a genre by name
-app.get("/genres/:genreName", 
-passport.authenticate("jwt", { session: false }),
-async (req, res) => {
-  try {
-    const movie = await Movies.findOne({ "Genre.Name": req.params.genreName });
-    movie ? res.json(movie.Genre) : res.status(404).send("Genre not found");
-  } catch (err) {
-    res.status(500).send("Error: " + err);
+app.get(
+  "/genres/:genreName",
+  // passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const movie = await Movies.findOne({
+        "Genre.Name": req.params.genreName,
+      });
+      movie ? res.json(movie.Genre) : res.status(404).send("Genre not found");
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
-});
+);
 
 // PUT: Update genres description
 app.put("/genres/:genreName", async (req, res) => {
