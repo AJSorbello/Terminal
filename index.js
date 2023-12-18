@@ -36,8 +36,7 @@ app.get("/", (req, res) => {
 });
 // User Routes
 // GET: Fetch all users
-app.get(
-  "/users",
+app.get("/users",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
@@ -82,8 +81,7 @@ app.get(
 // });
 
 // PUT: Update a user's info by username
-app.put(
-  "/users/:Username",
+app.put("/users/:Username",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     // CONDITION TO CHECK ADDED HERE
@@ -123,35 +121,32 @@ app.put(
   Email: String,
   Birthday: Date
 }*/
-app.post(
-  "/users",
-  async (req, res) => {
-    await Users.findOne({ Username: req.body.Username })
-      .then((user) => {
-        if (user) {
-          return res.status(400).send(req.body.Username + "already exists");
-        } else {
-          Users.create({
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday,
+app.post("/users", async (req, res) => {
+  await Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + "already exists");
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        })
+          .then((user) => {
+            res.status(201).json(user);
           })
-            .then((user) => {
-              res.status(201).json(user);
-            })
-            .catch((error) => {
-              console.error(error);
-              res.status(500).send("Error: " + error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send("Error: " + error);
-      });
-  }
-);
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
+});
 
 // Delete a user by username
 app.delete(
