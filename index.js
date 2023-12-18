@@ -282,7 +282,7 @@ app.get("/movies/genres/:genreName", async (req, res) => {
 app.post("/movies", async (req, res) => {
   try {
     const newMovie = new Movie(req.body);
-    await newMovies.save();
+    await newMovie.save();
     res.status(201).send(newMovie);
   } catch (err) {
     res.status(500).send("Error: " + err);
