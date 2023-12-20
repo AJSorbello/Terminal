@@ -4,8 +4,9 @@ UUID = require("uuid");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const Models = require("./models.js");
-
 const app = express();
+const { check, validationResult } = require("express-validator");
+const passport = require("passport");
 
 // Models
 const Movies = Models.Movie;
@@ -14,7 +15,10 @@ const Genres = Models.Genre;
 const Directors = Models.Director;
 
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/cfDB");
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // Middleware
 app.use(express.json());
@@ -22,11 +26,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(morgan("common"));
 
+    // CORS configuration
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+//   });
+//
 //inputing body parser
 // app.use(bodyParser.json());
 
 // Enables CORS
-const cors = require('cors');
+// const cors = require("cors");
 
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
@@ -40,8 +51,8 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-
-const { check, validationResult } = require('express-validator');
+  // Passport Middleware
+  app.use(passport.initialize());
 
 // Middleware for passport
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -54,7 +65,8 @@ app.get("/", (req, res) => {
 });
 // User Routes
 // GET: Fetch all users
-app.get("/users",
+app.get(
+  "/users",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
@@ -99,7 +111,8 @@ app.get(
 // });
 
 // PUT: Update a user's info by username
-app.put("/users/:Username",
+app.put(
+  "/users/:Username",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     // CONDITION TO CHECK ADDED HERE
@@ -107,12 +120,13 @@ app.put("/users/:Username",
       return res.status(400).send("Permission denied");
     }
     // CONDITION ENDS
+    let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
         $set: {
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         },
@@ -139,20 +153,24 @@ app.put("/users/:Username",
   Email: String,
   Birthday: Date
 }*/
-app.post('/users',
+app.post(
+  "/users",
   // Validation logic here for request
   //you can either use a chain of methods like .not().isEmpty()
   //which means "opposite of isEmpty" in plain english "is not empty"
   //or use .isLength({min: 5}) which means
   //minimum value of 5 characters are only allowed
   [
-    check('Username', 'Username is required').isLength({min: 5}),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email does not appear to be valid').isEmail()
-  ], async (req, res) => {
-
-  // check the validation object for errors
+    check("Username", "Username is required").isLength({ min: 5 }),
+    check(
+      "Username",
+      "Username contains non alphanumeric characters - not allowed."
+    ).isAlphanumeric(),
+    check("Password", "Password is required").not().isEmpty(),
+    check("Email", "Email does not appear to be valid").isEmail(),
+  ],
+  async (req, res) => {
+    // check the validation object for errors
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -164,27 +182,29 @@ app.post('/users',
       .then((user) => {
         if (user) {
           //If the user is found, send a response that it already exists
-          return res.status(400).send(req.body.Username + ' already exists');
+          return res.status(400).send(req.body.Username + " already exists");
         } else {
-          Users
-            .create({
-              Username: req.body.Username,
-              Password: hashedPassword,
-              Email: req.body.Email,
-              Birthday: req.body.Birthday
+          Users.create({
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
+          })
+            .then((user) => {
+              res.status(201).json(user);
             })
-            .then((user) => { res.status(201).json(user) })
             .catch((error) => {
               console.error(error);
-              res.status(500).send('Error: ' + error);
+              res.status(500).send("Error: " + error);
             });
         }
       })
       .catch((error) => {
         console.error(error);
-        res.status(500).send('Error: ' + error);
+        res.status(500).send("Error: " + error);
       });
-  });
+  }
+);
 
 // Delete a user by username
 app.delete(
@@ -281,7 +301,7 @@ app.get("/movies/genres/:genreName", async (req, res) => {
 // POST: Add a new movie
 app.post("/movies", async (req, res) => {
   try {
-    const newMovie = new Movie(req.body);
+    const newMovie = new Movies(req.body);
     await newMovie.save();
     res.status(201).send(newMovie);
   } catch (err) {
@@ -420,3 +440,9 @@ const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
 });
+
+// MongoDB connection error handling
+mongoose.connection.on(
+  "error",
+  console.error.bind(console, "MongoDB connection error:")
+);
