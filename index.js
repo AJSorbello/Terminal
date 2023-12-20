@@ -52,7 +52,7 @@ app.use(cors({
   }
 }));
   // Passport Middleware
-  app.use(passport.initialize());
+  // app.use(passport.initialize());
 
 // Middleware for passport
 // app.use(bodyParser.urlencoded({ extended: true }));
