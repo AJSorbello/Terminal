@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const app = express();
 const { check, validationResult } = require("express-validator");
-const passport = require("passport");
+
 
 // Models
 const Movies = Models.Movie;
