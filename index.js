@@ -67,7 +67,7 @@ app.get("/", (req, res) => {
 // GET: Fetch all users
 app.get(
   "/users",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const users = await Users.find();
@@ -81,7 +81,7 @@ app.get(
 // GET: Fetch a user by username
 app.get(
   "/users/:Username",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const user = await Users.findOne({ Username: req.params.Username });
