@@ -308,25 +308,25 @@ app.get("/movies/genres/:genreName", async (req, res) => {
 //     res.status(500).send("Error: " + err);
 //   }
 // });
-
-app.post("/movies", async (req, res) => {
-  await Movies.create({
-    Title: req.body.Title,
-    Description: req.body.Description,
-    ImagePath: req.body.ImagePath,
-    Genre: req.body.Genre,
-    Director: req.body.Director,
-    Actors: req.body.Actors,
-    Featured: req.body.Featured
-  })
-    .then((movie) => {
-      res.status(201).json(movie);
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send("Error: " + error);  
-    });
-  })
+// not required for assigment  
+// app.post("/movies", async (req, res) => {
+//   await Movies.create({
+//     Title: req.body.Title,
+//     Description: req.body.Description,
+//     ImagePath: req.body.ImagePath,
+//     Genre: req.body.Genre,
+//     Director: req.body.Director,
+//     Actors: req.body.Actors,
+//     Featured: req.body.Featured
+//   })
+//     .then((movie) => {
+//       res.status(201).json(movie);
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//       res.status(500).send("Error: " + error);  
+//     });
+//   })
 
 
 // PUT: Update a movie by title
@@ -349,21 +349,21 @@ app.put(
   }
 );
 
-// DELETE: Remove a movie by title
-app.delete(
-  "/movies/:Title",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    try {
-      const movie = await Movies.findOneAndDelete({ Title: req.params.Title });
-      movie
-        ? res.status(200).send(`${req.params.Title} was deleted.`)
-        : res.status(404).send(`${req.params.Title} was not found`);
-    } catch (err) {
-      res.status(500).send("Error: " + err);
-    }
-  }
-);
+// DELETE: Remove a movie by title (not needed for assignment)
+// app.delete(
+//   "/movies/:Title",
+//   passport.authenticate("jwt", { session: false }),
+//   async (req, res) => {
+//     try {
+//       const movie = await Movies.findOneAndDelete({ Title: req.params.Title });
+//       movie
+//         ? res.status(200).send(`${req.params.Title} was deleted.`)
+//         : res.status(404).send(`${req.params.Title} was not found`);
+//     } catch (err) {
+//       res.status(500).send("Error: " + err);
+//     }
+//   }
+// );
 
 // Genre Routes
 
@@ -393,18 +393,18 @@ app.get(
   }
 );
 
-// PUT: Update genres description
-app.put("/genres/:genreName", async (req, res) => {
-  try {
-    const movies = await Movies.updateMany(
-      { "Genre.Name": req.params.genreName },
-      { $set: { "Genre.Description": req.body.genreDescription } }
-    );
-    res.json(movies);
-  } catch (err) {
-    res.status(500).send("Error: " + err);
-  }
-});
+// PUT: Update genres description (not needed for assignment)
+// app.put("/genres/:genreName", async (req, res) => {
+//   try {
+//     const movies = await Movies.updateMany(
+//       { "Genre.Name": req.params.genreName },
+//       { $set: { "Genre.Description": req.body.genreDescription } }
+//     );
+//     res.json(movies);
+//   } catch (err) {
+//     res.status(500).send("Error: " + err);
+//   }
+// });
 
 // Get: Fetch all directors
 
