@@ -299,15 +299,35 @@ app.get("/movies/genres/:genreName", async (req, res) => {
 });
 
 // POST: Add a new movie
+// app.post("/movies", async (req, res) => {
+//   try {
+//     const newMovie = new Movies(req.body);
+//     await newMovie.save();
+//     res.status(201).send(newMovie);
+//   } catch (err) {
+//     res.status(500).send("Error: " + err);
+//   }
+// });
+
 app.post("/movies", async (req, res) => {
-  try {
-    const newMovie = new Movies(req.body);
-    await newMovie.save();
-    res.status(201).send(newMovie);
-  } catch (err) {
-    res.status(500).send("Error: " + err);
-  }
-});
+  await Movies.create({
+    Title: req.body.Title,
+    Description: req.body.Description,
+    ImagePath: req.body.ImagePath,
+    Genre: req.body.Genre,
+    Director: req.body.Director,
+    Actors: req.body.Actors,
+    Featured: req.body.Featured
+  })
+    .then((movie) => {
+      res.status(201).json(movie);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error: " + error);  
+    });
+  })
+
 
 // PUT: Update a movie by title
 app.put(
