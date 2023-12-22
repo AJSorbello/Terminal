@@ -15,8 +15,8 @@
 
     <table>
       <tr>
-        <th>Endpoint</th>
         <th>Method</th>
+        <th>Endpoint</th>
         <th>Parameters</th>
         <th>Request Body</th>
         <th>Description</th>
@@ -26,8 +26,8 @@
 
       <!-- Get All Movies -->
       <tr>
-        <td>/movies</td>
         <td>GET</td>
+        <td>/movies</td>
         <td></td>
         <td></td>
         <td>Returns a list of all movies.</td>
@@ -37,8 +37,8 @@
 
       <!-- Get Single Movie by Title -->
       <tr>
-        <td>/movies/:title</td>
         <td>GET</td>
+        <td>/movies/:title</td>
         <td>Title (string)</td>
         <td></td>
         <td>Returns data about a single movie.</td>
@@ -48,8 +48,8 @@
 
       <!-- Get Genre by Name -->
       <tr>
-        <td>/genres/:name</td>
         <td>GET</td>
+        <td>/genres/:name</td>
         <td>Name (string)</td>
         <td></td>
         <td>Returns data about a genre.</td>
@@ -59,8 +59,8 @@
 
       <!-- Get Director by Name -->
       <tr>
-        <td>/directors/:name</td>
         <td>GET</td>
+        <td>/directors/:name</td>
         <td>Name (string)</td>
         <td></td>
         <td>Returns data about a director.</td>
@@ -70,8 +70,8 @@
 
       <!-- User Registration -->
       <tr>
-        <td>/users</td>
         <td>POST</td>
+        <td>/users</td>
         <td></td>
         <td>{ username, password, email, dob }</td>
         <td>Allows new users to register.</td>
@@ -81,8 +81,8 @@
 
       <!-- Update User Info -->
       <tr>
-        <td>/users/:userId</td>
         <td>PUT</td>
+        <td>/users/:userId</td>
         <td>UserID (string)</td>
         <td>{ username, password, email, dob }</td>
         <td>Allows users to update their user info.</td>
@@ -97,8 +97,8 @@
 
       <!-- Add Movie to Favorites -->
       <tr>
-        <td>/users/:userId/favorites</td>
         <td>POST</td>
+        <td>/users/:userId/favorites</td>
         <td>UserID (string)</td>
         <td>{ movieId }</td>
         <td>Allows users to add a movie to their favorites.</td>
@@ -113,8 +113,8 @@
 
       <!-- Remove Movie from Favorites -->
       <tr>
-        <td>/users/:userId/favorites/:movieId</td>
         <td>DELETE</td>
+        <td>/users/:userId/favorites/:movieId</td>
         <td>UserID (string), MovieID (string)</td>
         <td></td>
         <td>Allows users to remove a movie from their favorites.</td>
@@ -129,15 +129,6 @@
       </tr>
 
       <!-- Deregister User -->
-      <tr>
-        <td>/users/:userId</td>
-        <td>DELETE</td>
-        <td>UserID (string)</td>
-        <td></td>
-        <td>Allows existing users to deregister.</td>
-        <td>User.findByIdAndRemove(req.params.userId)</td>
-        <td>{ success: true, message: "User deregistered successfully" }</td>
-      </tr>
     </table>
   </body>
 </html>
