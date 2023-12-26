@@ -229,6 +229,7 @@ app.delete(
 // Movie Routes
 // GET: Fetch all movies
 app.get("/movies", async (req, res) => {
+  passport.authenticate("jwt", { session: false }),
   await Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
