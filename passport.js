@@ -7,6 +7,8 @@ let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
 
+  const jwtSecret = process.env.JWT_SECRET || 'your_jwt_secret';
+  
 passport.use(
   new LocalStrategy(
     {
