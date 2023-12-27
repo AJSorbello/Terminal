@@ -24,6 +24,7 @@
         <th>Method</th>
         <th>Endpoint</th>
         <th>Parameters</th>
+        <th>login required</th>
         <th>Request Body</th>
         <th>Description</th>
         <th>Mongoose Logic</th>
@@ -35,7 +36,7 @@
         <td>GET</td>
         <td>/movies</td>
         <td></td>
-        <td></td>
+        <td>no</td>
         <td>Returns a list of all movies.</td>
         <td>Movies.find({})</td>
         <td>[{ movieObject1 }, { movieObject2 }, ...]</td>
@@ -46,7 +47,7 @@
         <td>GET</td>
         <td>/movies/:title</td>
         <td>Title (string)</td>
-        <td></td>
+        <td>no</td>
         <td>Returns data about a single movie.</td>
         <td>Movies.findOne({ title: req.params.title })</td>
         <td>{ movieObject }</td>
@@ -57,7 +58,7 @@
         <td>PUT</td>
         <td>/movies/:title</td>
         <td>Title (string)</td>
-        <td></td>
+        <td>yes</td>
         <td>update a movie by title</td>
         <td>Movies.findOneAndUpdate({ Title: req.params.Title }</td>
         <td>{ movieObject }</td>
@@ -68,7 +69,7 @@
         <td>GET</td>
         <td>/movies/genres/:genreName</td>
         <td>Name (string)</td>
-        <td></td>
+        <td>no</td>
         <td>Returns data about a genre.</td>
         <td>Movies.find({ name: req.params.name })</td>
         <td>{ genreObject }</td>
@@ -79,7 +80,7 @@
         <td>GET</td>
         <td>/directors/:directorName</td>
         <td>Name (string)</td>
-        <td></td>
+        <td>no</td>
         <td>Returns data about a director.</td>
         <td>Movies.findOne({"Director.Name": req.params.directorName,</td>
         <td>{ directorObject }</td>
@@ -89,7 +90,7 @@
       <tr>
         <td>POST</td>
         <td>/users</td>
-        <td></td>
+        <td>no</td>
         <td>{ username, password, email, birthday }</td>
         <td>Allows new users to register.</td>
         <td>Users.create(req.body)</td>
@@ -130,7 +131,7 @@
         <td>DELETE</td>
         <td>/users/:Username/movies/:MovieID</td>
         <td>UserID (string), MovieID (string)</td>
-        <td></td>
+        <td>yes</td>
         <td>Allows users to remove a movie from their favorites.</td>
         <td>updatedUser = await Users.findOneAndUpdate</td>
         <td>
