@@ -37,7 +37,7 @@
         <td></td>
         <td></td>
         <td>Returns a list of all movies.</td>
-        <td>Movie.find({})</td>
+        <td>Movies.find({})</td>
         <td>[{ movieObject1 }, { movieObject2 }, ...]</td>
       </tr>
 
@@ -48,29 +48,40 @@
         <td>Title (string)</td>
         <td></td>
         <td>Returns data about a single movie.</td>
-        <td>Movie.findOne({ title: req.params.title })</td>
+        <td>Movies.findOne({ title: req.params.title })</td>
+        <td>{ movieObject }</td>
+      </tr>
+
+      <!-- PUT: Update a movie by title -->
+      <tr>
+        <td>PUT</td>
+        <td>/movies/:title</td>
+        <td>Title (string)</td>
+        <td></td>
+        <td>update a movie by title</td>
+        <td>Movies.findOneAndUpdate({ Title: req.params.Title }</td>
         <td>{ movieObject }</td>
       </tr>
 
       <!-- Get Genre by Name -->
       <tr>
         <td>GET</td>
-        <td>/genres/:name</td>
+        <td>/movies/genres/:genreName</td>
         <td>Name (string)</td>
         <td></td>
         <td>Returns data about a genre.</td>
-        <td>Genre.findOne({ name: req.params.name })</td>
+        <td>Movies.find({ name: req.params.name })</td>
         <td>{ genreObject }</td>
       </tr>
 
       <!-- Get Director by Name -->
       <tr>
         <td>GET</td>
-        <td>/directors/:name</td>
+        <td>/directors/:directorName</td>
         <td>Name (string)</td>
         <td></td>
         <td>Returns data about a director.</td>
-        <td>Director.findOne({ name: req.params.name })</td>
+        <td>Movies.findOne({"Director.Name": req.params.directorName,</td>
         <td>{ directorObject }</td>
       </tr>
 
@@ -81,20 +92,18 @@
         <td></td>
         <td>{ username, password, email, birthday }</td>
         <td>Allows new users to register.</td>
-        <td>User.create(req.body)</td>
+        <td>Users.create(req.body)</td>
         <td>{ success: true, message: "User registered successfully" }</td>
       </tr>
 
       <!-- Update User Info -->
       <tr>
         <td>PUT</td>
-        <td>/users/:userId</td>
+        <td>/users/:Username</td>
         <td>UserID (string)</td>
         <td>{ username, password, email, dob }</td>
         <td>Allows users to update their user info.</td>
-        <td>
-          User.findByIdAndUpdate(req.params.userId, req.body, { new: true })
-        </td>
+        <td>Users.findOneAndUpdate({ Username: req.params.Username }</td>
         <td>
           { success: true, message: "User updated successfully", updatedUser: {
           updatedUserInfo } }
@@ -109,8 +118,7 @@
         <td>{ movieId }</td>
         <td>Allows users to add a movie to their favorites.</td>
         <td>
-          User.findByIdAndUpdate(req.params.userId, { $push: { favorites:
-          req.body.movieId } })
+          updatedUser = await Users.findOneAndUpdate({ _id: req.params.userId
         </td>
         <td>
           { success: true, message: "Movie added to favorites successfully" }
@@ -120,21 +128,16 @@
       <!-- Remove Movie from Favorites -->
       <tr>
         <td>DELETE</td>
-        <td>/users/:userId/favorites/:movieId</td>
+        <td>/users/:Username/movies/:MovieID</td>
         <td>UserID (string), MovieID (string)</td>
         <td></td>
         <td>Allows users to remove a movie from their favorites.</td>
-        <td>
-          User.findByIdAndUpdate(req.params.userId, { $pull: { favorites:
-          req.params.movieId } })
-        </td>
+        <td>updatedUser = await Users.findOneAndUpdate</td>
         <td>
           { success: true, message: "Movie removed from favorites successfully"
           }
         </td>
       </tr>
-
-      <!-- Deregister User -->
     </table>
   </body>
 </html>

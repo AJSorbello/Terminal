@@ -155,11 +155,6 @@ app.put(
 }*/
 app.post(
   "/users",
-  // Validation logic here for request
-  //you can either use a chain of methods like .not().isEmpty()
-  //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
   [
     check("Username", "Username must be atleast 5 characters long").isLength({ min: 5 }),
     check(
