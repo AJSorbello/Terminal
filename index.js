@@ -66,9 +66,10 @@ app.get("/", (req, res) => {
 // User Routes
 // GET: Fetch all users
 app.get(
-  "/users", async (req, res) => {
+  "/users", passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
     try {
-      passport.authenticate("jwt", { session: false });
+      
       const users = await Users.find();
       res.status(200).json(users);
     } catch (error) {
@@ -79,10 +80,9 @@ app.get(
 
 // GET: Fetch a user by username
 app.get(
-  "/users/:Username",
+  "/users/:Username", passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      passport.authenticate("jwt", { session: false });
       const user = await Users.findOne({ Username: req.params.Username });
       user ? res.json(user) : res.status(404).send("User not found");
     } catch (err) {
@@ -222,8 +222,8 @@ app.delete(
 
 // Movie Routes
 // GET: Fetch all movies
-app.get("/movies", async (req, res) => {
-  passport.authenticate("jwt", { session: false }),
+app.get("/movies", passport.authenticate("jwt", { session: false }),
+ async (req, res) => {
   await Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
