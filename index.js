@@ -66,14 +66,13 @@ app.get("/", (req, res) => {
 // User Routes
 // GET: Fetch all users
 app.get(
-  "/users",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
+  "/users", async (req, res) => {
     try {
+      passport.authenticate("jwt", { session: false });
       const users = await Users.find();
       res.status(200).json(users);
-    } catch (err) {
-      res.status(500).send("Error: " + err);
+    } catch (error) {
+      res.status(500).send("Error: " + error);
     }
   }
 );
