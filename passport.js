@@ -45,16 +45,15 @@ passport.use(
 
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'your_jwt_secret'
+  secretOrKey: process.env.JWT_SECRET // Use environment variable
 }, async (jwtPayload, callback) => {
   return await Users.findById(jwtPayload._id)
     .then((user) => {
+      console.log(`User with ID ${user._id} authenticated`); // Log user ID instead of entire user object
       return callback(null, user);
     })
     .catch((error) => {
-       if (error) {
-          console.log(error);
+      console.log(error);
       return callback(error);
-       }
     });
 }));
