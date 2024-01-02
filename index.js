@@ -80,15 +80,24 @@ app.get(
 // GET: Fetch a user by username
 app.get(
   "/users/:Username",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    try {
-      const user = await Users.findOne({ Username: req.params.Username });
-      user ? res.json(user) : res.status(404).send("User not found");
-    } catch (err) {
-      res.status(500).send("Error: " + err);
+  async (req, res) => { 
+    passport.authenticate("jwt", { session: false });
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send("Permission denied");
     }
-  }
+    await Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.Username + " was not found");
+      } else {
+        res.status(200).json(user);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+    }
 );
 
 // PUT: Update a user's info by username
@@ -236,8 +245,8 @@ app.get("/movies", async (req, res) => {
 // POST: Add a movie to a user's list of favorites
 app.post(
   "/users/:Username/movies/:MovieID",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
+  
+  async (req, res) => {passport.authenticate("jwt", { session: false })
     try {
       const updatedUser = await Users.findOneAndUpdate(
         { Username: req.params.Username },
@@ -255,9 +264,7 @@ app.post(
 
 // DELETE: DELETE a movie of a user's list of favorites
 app.delete(
-  "/users/:Username/movies/:MovieID",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
+  "/users/:Username/movies/:MovieID", async (req, res) => { passport.authenticate("jwt", { session: false })
     try {
       const updatedUser = await Users.findOneAndUpdate(
         { Username: req.params.Username },
@@ -326,9 +333,7 @@ app.get("/movies/genres/:genreName", async (req, res) => {
 
 // PUT: Update a movie by title
 app.put(
-  "/movies/:Title",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
+  "/movies/:Title", async (req, res) => {passport.authenticate("jwt", { session: false })
     try {
       const updatedMovie = await Movies.findOneAndUpdate(
         { Title: req.params.Title },
