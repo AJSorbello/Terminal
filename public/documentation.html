@@ -31,6 +31,23 @@
         <th>Expected Response</th>
       </tr>
 
+      <!-- Login User -->
+      <tr>
+        <td>POST</td>
+        <td>/login</td>
+        <td>no</td>
+        <td>{ username, password }</td>
+        <td>Authenticates a user and provides access.</td>
+        <td>
+          Users.findOne({ username: req.body.username }).then(user => { //
+          Compare password logic here })
+        </td>
+        <td>
+          { success: true, message: "User logged in successfully", token:
+          jwtToken }
+        </td>
+      </tr>
+
       <!-- Get All Movies -->
       <tr>
         <td>GET</td>
@@ -60,7 +77,7 @@
         <td>Title (string)</td>
         <td>yes</td>
         <td>update a movie by title</td>
-        <td>Movies.findOneAndUpdate({ Title: req.params.Title }</td>
+        <td>Movies.findOneAndUpdate({ Title: req.params.Title })</td>
         <td>{ movieObject }</td>
       </tr>
 
@@ -82,7 +99,7 @@
         <td>Name (string)</td>
         <td>no</td>
         <td>Returns data about a director.</td>
-        <td>Movies.findOne({"Director.Name": req.params.directorName,</td>
+        <td>Movies.findOne({"Director.Name": req.params.directorName,})</td>
         <td>{ directorObject }</td>
       </tr>
 
@@ -145,7 +162,6 @@
         <td>/users/:Username</td>
         <td>Username (string)</td>
         <td>yes</td>
-        <td></td>
         <td>Allows an existing user to be deleted.</td>
         <td>Users.findOneAndDelete({ Username: req.params.Username })</td>
         <td>{ success: true, message: "User deleted successfully" }</td>
