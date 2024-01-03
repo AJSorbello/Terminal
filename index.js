@@ -222,7 +222,7 @@ app.delete(
 
 // Movie Routes
 // GET: Fetch all movies
-app.get("/movies", passport.authenticate("jwt", { session: false }),
+app.get("/movies", 
  async (req, res) => {
   await Movies.find()
     .then((movies) => {
@@ -326,7 +326,7 @@ app.get("/movies/genres/:genreName", async (req, res) => {
 // PUT: Update a movie by title
 app.put(
   "/movies/:Title",
-  passport.authenticate("jwt", { session: false }),
+  
   async (req, res) => {
     try {
       const updatedMovie = await Movies.findOneAndUpdate(
