@@ -14,13 +14,13 @@ const Users = Models.User;
 const Genres = Models.Genre;
 const Directors = Models.Director;
 
-// MongoDB Connection
+//MongoDB Connection
 // mongoose.connect(process.env.CONNECTION_URI, {
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
 // });
 // TESTING Branch
-mongoose.connect('mongodb://localhost:27017/moviesDB'); // this is for local testing
+mongoose.connect('mongodb://127.0.0.1:27017/cfDB'); // this is for local testing
   
 
 // Middleware
@@ -29,18 +29,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(morgan("common"));
 
-    // CORS configuration
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-//   });
-//
-//inputing body parser
-// app.use(bodyParser.json());
-
-// Enables CORS
-// const cors = require("cors");
 
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
 
