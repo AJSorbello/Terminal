@@ -13,6 +13,27 @@ export const SignupView = () => {
     // You can access the values of fullName, username, email, password, and birthdate here
     console.log(fullName, username, email, password, birthdate);
   };
+  const data = {
+    Username: username,
+    Password: password,
+    Email: email,
+    birthday: birthday,
+  };
+
+  fetch("https://myflix-movies.herokuapp.com/users", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+    if (response.ok) {
+      alert("Account created successfully");
+      window.location.reload();
+    } else {
+      alert("Failed to create account");
+    }
+  });
 
   return (
     <form onSubmit={handleSubmit}>
@@ -59,11 +80,11 @@ export const SignupView = () => {
         />
       </label>
       <label>
-        Birthdate:
+        birthday:
         <input
           type="date"
-          placeholder="Birthdate"
-          value={birthdate}
+          placeholder="birthday"
+          value={birthday}
           onChange={(event) => setBirthdate(event.target.value)}
         />
       </label>
