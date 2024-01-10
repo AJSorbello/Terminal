@@ -15,12 +15,12 @@ const Genres = Models.Genre;
 const Directors = Models.Director;
 
 //MongoDB Connection
-// mongoose.connect(process.env.CONNECTION_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-// TESTING Branch
-mongoose.connect('mongodb://127.0.0.1:27017/cfDB'); // this is for local testing
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+// // TESTING Branch
+// mongoose.connect('mongodb://127.0.0.1:27017/cfDB'); // this is for local testing
   
 
 // Middleware
