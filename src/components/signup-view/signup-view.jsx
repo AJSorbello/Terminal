@@ -17,7 +17,7 @@ export const SignupView = () => {
     Username: username,
     Password: password,
     Email: email,
-    birthday: birthday,
+    birthday: birthdate,
   };
 
   fetch("https://myflix-movies.herokuapp.com/users", {
@@ -52,7 +52,7 @@ export const SignupView = () => {
           type="text"
           placeholder="Username"
           value={username}
-          minLength="6"
+          minLength="3"
           pattern="^[a-zA-Z0-9]+$"
           title="Username can only contain letters and numbers"
           onChange={(event) => setUsername(event.target.value)}
@@ -73,8 +73,8 @@ export const SignupView = () => {
           type="password"
           placeholder="Password"
           value={password}
-          minLength={8}
-          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+          minLength={5}
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}"
           title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
           onChange={(event) => setPassword(event.target.value)}
         />
@@ -84,7 +84,7 @@ export const SignupView = () => {
         <input
           type="date"
           placeholder="birthday"
-          value={birthday}
+          value={birthdate}
           onChange={(event) => setBirthdate(event.target.value)}
         />
       </label>
