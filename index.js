@@ -1,5 +1,5 @@
 const express = require("express");
-BodyParser = require("body-parser");
+// BodyParser = require("body-parser");
 UUID = require("uuid");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
@@ -11,8 +11,8 @@ const cors = require("cors");
 // Models
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
-const Directors = Models.Director;
+// const Genres = Models.Genre;
+// const Directors = Models.Director;
 
 // MongoDB Connection
 mongoose.connect(process.env.CONNECTION_URI, {
