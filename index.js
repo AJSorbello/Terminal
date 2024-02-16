@@ -115,6 +115,7 @@ app.put(
       { Username: req.params.Username },
       {
         $set: {
+          Fullname: req.body.Fullname,
           Username: req.body.Username,
           Password: hashedPassword,
           Email: req.body.Email,
@@ -170,6 +171,7 @@ app.post(
           return res.status(400).send(req.body.Username + " already exists");
         } else {
           Users.create({
+            Fullname: req.body.Fullname,
             Username: req.body.Username,
             Password: hashedPassword,
             Email: req.body.Email,
