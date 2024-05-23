@@ -147,7 +147,7 @@ app.put(
 app.post(
   "/users",
   [
-    check("Username", "Username must be atleast 5 characters long").isLength({ min: 5 }),
+    check("Username", "Username must be atleast 5 characters long").isLength({ min: 2 }),
     check(
       "Username",
       "Username contains non alphanumeric characters - not allowed."
