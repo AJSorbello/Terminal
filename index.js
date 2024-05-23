@@ -30,7 +30,7 @@ app.use(express.static("public"));
 app.use(morgan("common"));
 
 
-let allowedOrigins = ['http://localhost:8080', 'https://bellomovies.netlify.app', 'http://localhost:1234', 'https://bellomoviesfork.netlify.app'];
+let allowedOrigins = ['http://localhost:8080', 'https://bellomovies.netlify.app', 'http://localhost:1234', 'https://bellomoviesfork.netlify.app', 'http://localhost:4200'];
 
 app.use(cors({
   origin: (origin, callback) => {
